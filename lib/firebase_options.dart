@@ -21,10 +21,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
@@ -84,4 +81,14 @@ class DefaultFirebaseOptions {
     storageBucket: 'academic-archival-system.firebasestorage.app',
     measurementId: 'G-J6F4L0M2MS',
   );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyBf_zIENEUG7BNUUxokLQa3AQv-t1OJthI',
+    appId: '1:861525505716:android:ddcd7b4c52540a9fa5c9e1',
+    messagingSenderId: '861525505716',
+    projectId: 'academic-archival-system',
+    databaseURL: 'https://academic-archival-system-default-rtdb.firebaseio.com',
+    storageBucket: 'academic-archival-system.firebasestorage.app',
+  );
+
 }
