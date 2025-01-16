@@ -6,8 +6,8 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container.new(
-        child: Center(),
+      body: Container(
+        child: const Center(),
       ),
     );
   }

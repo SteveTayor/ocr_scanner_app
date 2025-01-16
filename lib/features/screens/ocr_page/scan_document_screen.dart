@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'preview_document_screen.dart';
 
 class ScanDocumentScreen extends StatelessWidget {
-  const ScanDocumentScreen({Key? key}) : super(key: key);
+  const ScanDocumentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +12,12 @@ class ScanDocumentScreen extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {
             // Simulate scanned text for now
-            final scannedText = "Scanned text goes here.";
+            const scannedText = "Scanned text goes here.";
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PreviewDocumentScreen(scannedText: scannedText),
+                builder: (context) =>
+                    PreviewDocumentScreen(scannedText: scannedText),
               ),
             );
           },

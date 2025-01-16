@@ -10,7 +10,7 @@ class PreviewDocumentScreen extends StatelessWidget {
   final FirestoreService firestoreService = FirestoreService();
   final String userId = 'user123'; // Replace with actual user ID
 
-  PreviewDocumentScreen({Key? key, required this.scannedText}) : super(key: key) {
+  PreviewDocumentScreen({super.key, required this.scannedText}) {
     textController.text = scannedText;
   }
 
@@ -49,7 +49,8 @@ class PreviewDocumentScreen extends StatelessWidget {
 
                   await firestoreService.saveDocument(userId, document);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Document saved successfully!")),
+                    const SnackBar(
+                        content: Text("Document saved successfully!")),
                   );
                   Navigator.pop(context);
                 } catch (e) {
