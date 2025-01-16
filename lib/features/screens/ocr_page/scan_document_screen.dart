@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'save_document_screen.dart';
+import 'preview_document_screen.dart';
 
 class ScanDocumentScreen extends StatelessWidget {
   const ScanDocumentScreen({Key? key}) : super(key: key);

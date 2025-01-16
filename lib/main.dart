@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'features/screens/ocr_page/scan_document_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {

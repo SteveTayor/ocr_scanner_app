@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../services/firestore_service.dart';
-import '../models/document_model.dart';
-import '../widgets/text_field_widget.dart';
+
+import '../../../core/models/documents_model.dart';
+import '../../../core/services/firestore_service.dart';
+import '../../widgets/text_field.dart';
 
 class PreviewDocumentScreen extends StatelessWidget {
   final String scannedText;
