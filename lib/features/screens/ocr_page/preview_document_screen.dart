@@ -3,66 +3,88 @@ import 'package:flutter/material.dart';
 import '../../../core/models/documents_model.dart';
 import '../../../core/services/firestore_service.dart';
 import '../../widgets/text_field.dart';
+import 'dart:io';
+import 'scan_document_screen.dart';
 
-class PreviewDocumentScreen extends StatelessWidget {
+class PreviewDocumentScreen extends StatefulWidget {
+  final File imageFile;
   final String scannedText;
-  final TextEditingController textController = TextEditingController();
-  final FirestoreService firestoreService = FirestoreService();
-  final String userId = 'user123'; // Replace with actual user ID
 
-  PreviewDocumentScreen({super.key, required this.scannedText}) {
-    textController.text = scannedText;
+  const PreviewDocumentScreen({Key? key, required this.imageFile, required this.scannedText}) : super(key: key);
+
+  @override
+  State<PreviewDocumentScreen> createState() => _PreviewDocumentScreenState();
+}
+
+class _PreviewDocumentScreenState extends State<PreviewDocumentScreen> {
+  final TextEditingController _textController = TextEditingController();
+  final FirebaseService _firebaseService = FirebaseService();
+
+  bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController.text = widget.scannedText;
+  }
+
+  Future<void> _saveDocument() async {
+    try {
+      setState(() {
+        _isSaving = true;
+      });
+
+      // Prompt for user details
+      String userName = "John Doe"; // Prompt user for this
+      String matricNumber = "123456"; // Prompt user for this
+      String level = "100"; // Prompt user for this
+
+      // Upload image and save metadata
+      String fileName = "documents/$matricNumber/$level/${DateTime.now().millisecondsSinceEpoch}.jpg";
+      String fileUrl = await _firebaseService.uploadImage(widget.imageFile, fileName);
+
+      final document = ScannedDocument(
+        userName: userName,
+        matricNumber: matricNumber,
+        level: level,
+        text: _textController.text,
+        fileUrl: fileUrl,
+        timestamp: DateTime.now(),
+      );
+
+      await _firebaseService.saveDocument(document);
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Document saved successfully!")));
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error saving document: $e")));
+    } finally {
+      setState(() {
+        _isSaving = false);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Save Document")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            CustomTextField(
-              controller: textController,
-              label: "Edited Text",
-              maxLines: 5,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () async {
-                String editedText = textController.text.trim();
-                if (editedText.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Please enter some text.")),
-                  );
-                  return;
-                }
-
-                try {
-                  DocumentModel document = DocumentModel(
-                    id: DateTime.now().millisecondsSinceEpoch.toString(),
-                    editedText: editedText,
-                    level: "100",
-                    matricNumber: "123456",
-                    documentName: "Scanned Document",
-                  );
-
-                  await firestoreService.saveDocument(userId, document);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text("Document saved successfully!")),
-                  );
-                  Navigator.pop(context);
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Failed to save document: $e")),
-                  );
-                }
-              },
-              child: const Text("Save"),
-            ),
-          ],
-        ),
+      appBar: AppBar(title: const Text("Preview Document")),
+      body: Column(
+        children: [
+          Image.file(widget.imageFile, height: 200, fit: BoxFit.cover),
+          TextField(
+            controller: _textController,
+            maxLines: null,
+            decoration: const InputDecoration(labelText: "Edit Scanned Text"),
+          ),
+          const SizedBox(height: 20),
+          _isSaving
+              ? const CircularProgressIndicator()
+              : ElevatedButton(
+                  onPressed: _saveDocument,
+                  child: const Text("Save Document"),
+                ),
+        ],
       ),
     );
   }

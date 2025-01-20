@@ -2,39 +2,54 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DocumentModel {
   final String id;
-  final String editedText;
-  final String level;
+  final String userName;
   final String matricNumber;
-  final String documentName;
-  final DateTime? timestamp;
+  final String level;
+  final String text;
+  final String fileUrl;
+  final DateTime timestamp;
 
   DocumentModel({
     required this.id,
-    required this.editedText,
-    required this.level,
+    required this.userName,
     required this.matricNumber,
-    required this.documentName,
-    this.timestamp,
+    required this.level,
+    required this.text,
+    required this.fileUrl,
+    required this.timestamp,
   });
 
   factory DocumentModel.fromMap(String id, Map<String, dynamic> map) {
     return DocumentModel(
       id: id,
-      editedText: map['edited_text'] ?? '',
-      level: map['level'] ?? '',
-      matricNumber: map['matric_number'] ?? '',
-      documentName: map['document_name'] ?? '',
-      timestamp: (map['timestamp'] as Timestamp?)?.toDate(),
+      userName: json['userName'] ?? '',
+      matricNumber: json['matricNumber'] ?? '',
+      level: json['level'] ?? '',
+      text: json['text'] ?? '',
+      fileUrl: json['fileUrl'] ?? '',
+      timestamp: DateTime.parse(json['timestamp']),
     );
   }
+      // timestamp: (map['timestamp'] as Timestamp?)?.toDate(),
 
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'edited_text': editedText,
+  //     'level': level,
+  //     'matric_number': matricNumber,
+  //     'document_name': documentName,
+  //     'timestamp': FieldValue.serverTimestamp(),
+  //   };
+  // }
+  // Convert to JSON for Firestore
   Map<String, dynamic> toMap() {
     return {
-      'edited_text': editedText,
+      'userName': userName,
+      'matricNumber': matricNumber,
       'level': level,
-      'matric_number': matricNumber,
-      'document_name': documentName,
-      'timestamp': FieldValue.serverTimestamp(),
+      'text': text,
+      'fileUrl': fileUrl,
+      'timestamp': timestamp.toIso8601String(),
     };
   }
 }
