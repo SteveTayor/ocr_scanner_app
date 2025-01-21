@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../core/models/documents_model.dart';
 import '../../../core/services/firestore_service.dart';
+import '../../../core/services/network.dart';
+import '../../widgets/no_network_widget.dart';
 import '../../widgets/text_field.dart';
 import 'dart:io';
 import 'scan_document_screen.dart';
@@ -148,6 +150,15 @@ class _PreviewDocumentScreenState extends State<PreviewDocumentScreen> {
 
   /// Save the document to Firestore
   Future<void> _saveDocument() async {
+    final hasInternet = await NetworkChecker().hasInternetConnection();
+    if (!hasInternet) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const NoNetworkWidget()),
+      );
+      return;
+    }
+
     if (_matricNumberController.text.isEmpty ||
         _userNameController.text.isEmpty) {
       _showSnackBar("Please provide both name and matric number.",
