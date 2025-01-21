@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../core/services/network.dart';
+import '../../widgets/no_network_widget.dart';
 import 'preview_document_screen.dart';
 
 import 'dart:io';
@@ -167,6 +169,15 @@ class _OCRScannerScreenState extends State<ScanDocumentScreen> {
   /// Perform OCR on the selected image
   Future<void> _performOCR() async {
     try {
+      final hasInternet = await NetworkChecker().hasInternetConnection();
+      if (!hasInternet) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NoNetworkWidget()),
+        );
+        return;
+      }
+
       if (_selectedImage == null) return;
 
       setState(() {
@@ -223,7 +234,7 @@ class _OCRScannerScreenState extends State<ScanDocumentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("OCR Scanner"),
+        title: const Text("Document Scanner"),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
