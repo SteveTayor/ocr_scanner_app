@@ -22,15 +22,15 @@ class DocumentModel {
   factory DocumentModel.fromMap(String id, Map<String, dynamic> map) {
     return DocumentModel(
       id: id,
-      userName: json['userName'] ?? '',
-      matricNumber: json['matricNumber'] ?? '',
-      level: json['level'] ?? '',
-      text: json['text'] ?? '',
-      fileUrl: json['fileUrl'] ?? '',
-      timestamp: DateTime.parse(json['timestamp']),
+      userName: map['userName'] ?? '',
+      matricNumber: map['matricNumber'] ?? '',
+      level: map['level'] ?? '',
+      text: map['text'] ?? '',
+      fileUrl: map['fileUrl'] ?? '',
+      timestamp: DateTime.parse(map['timestamp']),
     );
   }
-      // timestamp: (map['timestamp'] as Timestamp?)?.toDate(),
+  // timestamp: (map['timestamp'] as Timestamp?)?.toDate(),
 
   // Map<String, dynamic> toMap() {
   //   return {
