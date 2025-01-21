@@ -168,16 +168,16 @@ class _OCRScannerScreenState extends State<ScanDocumentScreen> {
 
   /// Perform OCR on the selected image
   Future<void> _performOCR() async {
-    try {
-      final hasInternet = await NetworkChecker().hasInternetConnection();
-      if (!hasInternet) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const NoNetworkWidget()),
-        );
-        return;
-      }
+    final hasInternet = await NetworkChecker().hasInternetConnection();
+    if (!hasInternet) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const NoNetworkWidget()),
+      );
+      return;
+    }
 
+    try {
       if (_selectedImage == null) return;
 
       setState(() {
