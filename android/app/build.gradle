@@ -12,16 +12,16 @@ plugins {
 
 android {
     namespace = "com.example.ocr_document_scanner_app"
-    compileSdk = flutter.compileSdkVersionE
+    compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
     
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_23
+        targetCompatibility = JavaVersion.VERSION_23
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_1_
     }
 
     defaultConfig {
