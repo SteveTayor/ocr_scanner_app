@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/services/network.dart';
 
 class NoNetworkWidget extends StatefulWidget {
-  const NoNetworkWidget({Key? key}) : super(key: key);
+  const NoNetworkWidget({super.key});
 
   @override
   State<NoNetworkWidget> createState() => _NoNetworkWidgetState();

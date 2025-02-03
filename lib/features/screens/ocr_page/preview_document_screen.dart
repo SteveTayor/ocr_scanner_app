@@ -108,8 +108,7 @@ class PreviewDocumentScreen extends StatefulWidget {
   final String scannedText;
 
   const PreviewDocumentScreen(
-      {Key? key, required this.imageFile, required this.scannedText})
-      : super(key: key);
+      {super.key, required this.imageFile, required this.scannedText});
 
   @override
   State<PreviewDocumentScreen> createState() => _PreviewDocumentScreenState();

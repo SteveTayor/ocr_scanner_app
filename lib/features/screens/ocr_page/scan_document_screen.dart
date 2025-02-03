@@ -138,7 +138,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 //   }
 // }
 class ScanDocumentScreen extends StatefulWidget {
-  const ScanDocumentScreen({Key? key}) : super(key: key);
+  const ScanDocumentScreen({super.key});
 
   @override
   State<ScanDocumentScreen> createState() => _OCRScannerScreenState();
