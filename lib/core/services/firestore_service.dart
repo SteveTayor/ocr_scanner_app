@@ -4,11 +4,6 @@ import 'dart:io';
 
 import '../models/documents_model.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:io';
-import '../models/documents_model.dart';
-
 class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -88,7 +83,8 @@ class FirebaseService {
       if (level != null) {
         snapshot = await userDoc.collection(level).get();
       } else {
-        snapshot = await userDoc.get();
+        snapshot =
+            await userDoc.get() as DocumentSnapshot<Map<String, dynamic>>;
       }
 
       return snapshot.docs

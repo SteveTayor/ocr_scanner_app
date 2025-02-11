@@ -4,9 +4,7 @@ import '../../../core/models/documents_model.dart';
 import '../../../core/services/firestore_service.dart';
 import '../../../core/services/network.dart';
 import '../../widgets/no_network_widget.dart';
-import '../../widgets/text_field.dart';
 import 'dart:io';
-import 'scan_document_screen.dart';
 
 // class PreviewDocumentScreen extends StatefulWidget {
 //   final File imageFile;
