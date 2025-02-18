@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ocr_document_scanner_app/features/screens/home_page/home_page.dart';
 import 'core/services/network.dart';
 import 'features/screens/ocr_page/scan_document_screen.dart';
 import 'features/widgets/no_network_widget.dart';
@@ -83,8 +84,8 @@ class _MainScreenState extends State<MainScreen> {
           // If network is lost, navigate to NoNetworkWidget
           Future.microtask(() => _navigateToNoNetwork());
         }
-
-        return const ScanDocumentScreen();
+        return const Homepage();
+        // return const ScanDocumentScreen();
       },
     );
   }

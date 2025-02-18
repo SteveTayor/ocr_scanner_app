@@ -84,7 +84,7 @@ class FirebaseService {
         snapshot = await userDoc.collection(level).get();
       } else {
         snapshot =
-            await userDoc.get() as DocumentSnapshot<Map<String, dynamic>>;
+            await userDoc.get();
       }
 
       return snapshot.docs
