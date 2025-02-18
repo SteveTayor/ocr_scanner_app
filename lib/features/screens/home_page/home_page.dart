@@ -16,8 +16,6 @@ class Homepage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Display the UniVault logo (if available)
-            Image.asset('assets/logo.png', height: 150),
             const SizedBox(height: 20),
             const Text(
               'Welcome to UniVault',
