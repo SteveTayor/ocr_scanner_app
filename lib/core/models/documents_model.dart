@@ -46,7 +46,7 @@ class DocumentModel {
       'matricNumber': matricNumber,
       'level': level,
       'text': text,
-      'fileUrl': fileUrl,
+      'fileUrl': fileUrl,   
       'timestamp': timestamp.toIso8601String(),
     };
   }

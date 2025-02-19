@@ -1,0 +1,1 @@
+/home/stephen/development/repo/ocr_scanner_app/build/app/intermediates/cxx/Debug/3y593y5c/obj/x86
