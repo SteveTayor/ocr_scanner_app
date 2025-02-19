@@ -8,18 +8,17 @@ class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  /// Create or Verify User Exists in Firestore
+  /// Create or verify a user exists in Firestore.
   Future<void> createOrVerifyUser(String userName, String matricNumber) async {
     try {
       if (userName.isEmpty || matricNumber.isEmpty) {
         throw Exception("User name and matric number cannot be empty.");
       }
-
+      // Use a document ID format: userName_matricNumber
       final userDoc = _firestore
           .collection("archived_scanned_document")
-          .doc("user_$matricNumber");
+          .doc("${userName}_${matricNumber}");
       final snapshot = await userDoc.get();
-
       if (!snapshot.exists) {
         await userDoc.set({
           'userName': userName,
@@ -32,36 +31,67 @@ class FirebaseService {
     }
   }
 
-  /// Upload Image to Firebase Storage
-  Future<String> uploadImage(
-      File imageFile, String matricNumber, String level) async {
-    try {
-      if (matricNumber.isEmpty || level.isEmpty) {
-        throw Exception("Matric number and level must be provided.");
-      }
+  
 
-      final String filePath =
-          "documents/$matricNumber/$level/${DateTime.now().millisecondsSinceEpoch}.jpg";
-      final Reference storageRef = _storage.ref().child(filePath);
-      final UploadTask uploadTask = storageRef.putFile(imageFile);
-      final TaskSnapshot snapshot = await uploadTask;
-      return await snapshot.ref.getDownloadURL();
-    } catch (e) {
-      throw Exception("Error uploading image: $e");
-    }
-  }
+  /// Upload Image to Firebase Storage
+  // Future<String> uploadImage(
+  //     File imageFile, String matricNumber, String level) async {
+  //   try {
+  //     if (matricNumber.isEmpty || level.isEmpty) {
+  //       throw Exception("Matric number and level must be provided.");
+  //     }
+
+  //     final String filePath =
+  //         "documents/$matricNumber/$level/${DateTime.now().millisecondsSinceEpoch}.jpg";
+  //     final Reference storageRef = _storage.ref().child(filePath);
+  //     final UploadTask uploadTask = storageRef.putFile(imageFile);
+  //     final TaskSnapshot snapshot = await uploadTask;
+  //     return await snapshot.ref.getDownloadURL();
+  //   } catch (e) {
+  //     throw Exception("Error uploading image: $e");
+  //   }
+  // }
 
   /// Save Document Metadata to Firestore
+  // Future<void> saveDocument(DocumentModel document) async {
+  //   try {
+  //     if (document.matricNumber.isEmpty || document.level.isEmpty) {
+  //       throw Exception("Document must have a matric number and level.");
+  //     }
+
+  //     final userDoc = _firestore
+  //         .collection("archived_scanned_document")
+  //         .doc("user_${document.matricNumber}");
+  //     await userDoc.collection(document.level).add(document.toMap());
+  //   } catch (e) {
+  //     throw Exception("Error saving document: $e");
+  //   }
+  // }
+
+  /// Save document metadata (with extracted text only) to Firestore.
   Future<void> saveDocument(DocumentModel document) async {
     try {
       if (document.matricNumber.isEmpty || document.level.isEmpty) {
         throw Exception("Document must have a matric number and level.");
       }
-
+      // Use the document ID format: userName_matricNumber
       final userDoc = _firestore
           .collection("archived_scanned_document")
-          .doc("user_${document.matricNumber}");
-      await userDoc.collection(document.level).add(document.toMap());
+          .doc("${document.userName}_${document.matricNumber}");
+      
+      // Firestore will automatically create the subcollection (e.g., '100') if it doesn't exist.
+      final docRef = userDoc.collection(document.level).doc();
+      // Create a new document model with fileUrl as an empty string.
+      final newDocument = DocumentModel(
+        id: docRef.id,
+        userName: document.userName,
+        matricNumber: document.matricNumber,
+        level: document.level,
+        text: document.text,
+        fileUrl: "", // Not saving the image
+        timestamp: document.timestamp,
+      );
+      await docRef.set(newDocument.toMap());
     } catch (e) {
       throw Exception("Error saving document: $e");
     }

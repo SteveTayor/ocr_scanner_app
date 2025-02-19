@@ -117,7 +117,7 @@ class _PreviewDocumentScreenState extends State<PreviewDocumentScreen> {
   final TextEditingController _textController = TextEditingController();
   final TextEditingController _matricNumberController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
-
+final NetworkChecker _networkChecker = NetworkChecker();
   String _selectedLevel = "100";
   bool _isLoadingUsers = true;
   bool _isSaving = false;
@@ -147,54 +147,37 @@ class _PreviewDocumentScreenState extends State<PreviewDocumentScreen> {
 
   /// Save the document to Firestore
   Future<void> _saveDocument() async {
-    final hasInternet = await NetworkChecker().hasInternetConnection();
-    if (!hasInternet) {
+    bool connected = await _networkChecker.hasInternetConnection();
+    if (!connected) {
       Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const NoNetworkWidget()),
-      );
+          context, MaterialPageRoute(builder: (context) => const NoNetworkWidget()));
       return;
     }
-
-    if (_matricNumberController.text.isEmpty ||
-        _userNameController.text.isEmpty) {
-      _showSnackBar("Please provide both name and matric number.",
-          isError: true);
+    if (_userNameController.text.isEmpty || _matricNumberController.text.isEmpty) {
+      _showSnackBar("Please enter both User Name and Matric Number.", isError: true);
       return;
     }
-
     try {
       setState(() {
         _isSaving = true;
       });
-
-      // Create user if it doesn't exist
+      // Ensure user exists or is created.
       await _firebaseService.createOrVerifyUser(
         _userNameController.text,
         _matricNumberController.text,
       );
-
-      // Upload image to Firebase Storage
-      final fileUrl = await _firebaseService.uploadImage(
-        widget.imageFile,
-        _matricNumberController.text,
-        _selectedLevel,
-      );
-
-      // Create document model
+      // Create the document model (note: fileUrl is empty as we are not saving images).
       final document = DocumentModel(
-        id: "",
+        id: '',
         userName: _userNameController.text,
         matricNumber: _matricNumberController.text,
         level: _selectedLevel,
         text: _textController.text,
-        fileUrl: fileUrl,
+        fileUrl: "", // Not saving the image
         timestamp: DateTime.now(),
       );
-
-      // Save document to Firestore
+      // Save document metadata to Firestore.
       await _firebaseService.saveDocument(document);
-
       _showSnackBar("Document saved successfully!");
       Navigator.pop(context);
     } catch (e) {

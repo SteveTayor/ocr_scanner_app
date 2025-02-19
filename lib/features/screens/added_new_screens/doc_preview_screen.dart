@@ -52,11 +52,11 @@ final NetworkChecker _networkChecker = NetworkChecker();
         _matricNumberController.text,
       );
       // Upload image to Firebase Storage and get URL.
-      final fileUrl = await _firebaseService.uploadImage(
-        widget.imageFile,
-        _matricNumberController.text,
-        _selectedLevel,
-      );
+      // final fileUrl = await _firebaseService.uploadImage(
+      //   widget.imageFile,
+      //   _matricNumberController.text,
+      //   _selectedLevel,
+      // );
       // Create a new document model (Firestore auto-generates document ID in service).
       final document = DocumentModel(
         id: '',
@@ -64,7 +64,7 @@ final NetworkChecker _networkChecker = NetworkChecker();
         matricNumber: _matricNumberController.text,
         level: _selectedLevel,
         text: _textController.text,
-        fileUrl: fileUrl,
+        fileUrl: "",
         timestamp: DateTime.now(),
       );
       await _firebaseService.saveDocument(document);
