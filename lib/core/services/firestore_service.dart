@@ -88,6 +88,7 @@ class FirebaseService {
         matricNumber: document.matricNumber,
         level: document.level,
         text: document.text,
+        documentType: document.documentType,
         fileUrl: "", // Not saving the image
         timestamp: document.timestamp,
       );

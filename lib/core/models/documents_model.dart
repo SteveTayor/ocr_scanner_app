@@ -5,6 +5,7 @@ class DocumentModel {
   final String level;
   final String text;
   final String fileUrl;
+  final String documentType;
   final DateTime timestamp;
 
   DocumentModel({
@@ -14,6 +15,7 @@ class DocumentModel {
     required this.level,
     required this.text,
     required this.fileUrl,
+    required this.documentType,
     required this.timestamp,
   });
 
@@ -25,7 +27,8 @@ class DocumentModel {
       level: map['level'] ?? '',
       text: map['text'] ?? '',
       fileUrl: map['fileUrl'] ?? '',
-      timestamp: DateTime.parse(map['timestamp']),
+      timestamp: DateTime.parse(map['timestamp']), 
+      documentType: map['documentType'] ?? '',
     );
   }
   // timestamp: (map['timestamp'] as Timestamp?)?.toDate(),
@@ -48,6 +51,7 @@ class DocumentModel {
       'text': text,
       'fileUrl': fileUrl,   
       'timestamp': timestamp.toIso8601String(),
+      'documentType': documentType,
     };
   }
 }

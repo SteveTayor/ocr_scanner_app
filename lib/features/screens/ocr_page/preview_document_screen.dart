@@ -172,6 +172,7 @@ final NetworkChecker _networkChecker = NetworkChecker();
         userName: _userNameController.text,
         matricNumber: _matricNumberController.text,
         level: _selectedLevel,
+        documentType: 'scanned',
         text: _textController.text,
         fileUrl: "", // Not saving the image
         timestamp: DateTime.now(),

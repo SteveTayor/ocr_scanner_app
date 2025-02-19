@@ -22,8 +22,9 @@ class _PreviewSavePageState extends State<PreviewSavePage> {
   final TextEditingController _matricNumberController = TextEditingController();
   
   String _selectedLevel = "100";
+  String _selectedDocument = "Letter";
   bool _isSaving = false;
-final NetworkChecker _networkChecker = NetworkChecker();
+  final NetworkChecker _networkChecker = NetworkChecker();
 
   @override
   void initState() {
@@ -64,6 +65,7 @@ final NetworkChecker _networkChecker = NetworkChecker();
         matricNumber: _matricNumberController.text,
         level: _selectedLevel,
         text: _textController.text,
+        documentType: _selectedDocument,
         fileUrl: "",
         timestamp: DateTime.now(),
       );
@@ -78,6 +80,7 @@ final NetworkChecker _networkChecker = NetworkChecker();
       });
     }
   }
+
   void _showSnackBar(String message, {bool isError = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), backgroundColor: isError ? Colors.red : Colors.green),
@@ -93,6 +96,7 @@ final NetworkChecker _networkChecker = NetworkChecker();
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          spacing: 20,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Display the image preview
@@ -127,12 +131,34 @@ final NetworkChecker _networkChecker = NetworkChecker();
                 border: OutlineInputBorder(),
               ),
             ),
+            Text(
+              "Select Document Type",
+              style: const TextStyle(fontSize: 18),
+            ),
+            DropdownButtonFormField<String>(
+              value: _selectedDocument,
+              items: ['Transcript', 'Exam paper', 'Letter', 'Research paper'] 
+                  .map((docType) => DropdownMenuItem(
+                        value: docType,
+                        child: Text('$docType'),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  _selectedDocument = value!;
+                });
+              },
+              decoration: const InputDecoration(
+                labelText: 'Select Academic Level',
+                border: OutlineInputBorder(),
+              ),
+            ),
             const SizedBox(height: 20),
             // Text fields for entering or selecting user name and matric number
             TextField(
               controller: _userNameController,
               decoration: const InputDecoration(
-                labelText: 'Enter or Select User Name',
+                labelText: 'Enter User Name',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -140,7 +166,7 @@ final NetworkChecker _networkChecker = NetworkChecker();
             TextField(
               controller: _matricNumberController,
               decoration: const InputDecoration(
-                labelText: 'Enter or Select Matric Number',
+                labelText: 'Enter Matric Number',
                 border: OutlineInputBorder(),
               ),
             ),
