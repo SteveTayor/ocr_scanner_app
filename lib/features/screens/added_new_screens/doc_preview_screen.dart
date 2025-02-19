@@ -175,10 +175,14 @@ class _PreviewSavePageState extends State<PreviewSavePage> {
             _isSaving
                 ? const Center(child: CircularProgressIndicator())
                 : ElevatedButton.icon(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Colors.lightBlue.shade800),
+                    foregroundColor: WidgetStatePropertyAll(Colors.white),
+                  ),
                     onPressed: _saveDocument,
                     icon: const Icon(Icons.save),
                     label: const Text('Save Document'),
-                  ),
+                  ),  
           ],
         ),
       ),
